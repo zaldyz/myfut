@@ -47,3 +47,17 @@ create table Cards (
   foreign key (revision) references Revisions(id),
   primary key (id)
 );
+
+-- Inserting leagues (Top 5)
+insert into leagues (leagueName) values ('LaLiga Santander');
+insert into leagues (leagueName) values ('Premier League');
+insert into leagues (leagueName) values ('Serie A');
+insert into leagues (leagueName) values ('Bundesliga');
+insert into leagues (leagueName) values ('Ligue 1');
+
+
+-- Inserting a club, syntax given the name of the league exists
+insert into clubs (clubName, league)
+  select 'Real Madrid' as clubName, id as league
+  from leagues
+  where leagueName='LaLiga Santander';
