@@ -29,8 +29,8 @@ create table Clubs (
 
 create table Players (
   id          serial, 
-  firstName   text, 
-  lastName    text not null,
+  fullName    text, 
+  displayName text not null,
   primary key (id)
 );
 
