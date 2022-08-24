@@ -1,0 +1,19 @@
+{
+  "name": "myfut",
+  "version": "1.0.0",
+  "description": "A very simple FUT database and web server to revise and practice learned concepts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaldyz/myfut.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zaldyz/myfut/issues"
+  },
+  "homepage": "https://github.com/zaldyz/myfut#readme"
+}
