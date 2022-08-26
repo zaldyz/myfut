@@ -57,7 +57,9 @@ $ python3 scraper.py
 ```
 Once the script finishes executing, a new file `data.txt` containing latest player data should appear in the current directory.
 
-Now to insert our newly acquired data into our database, first ensure the postgreSQL server is running, and the database `myfut` exists and is initialised as per the instructions in Step 1.
+Now to insert our newly acquired data into our database. 
+
+First ensure the postgreSQL server is running, and the database `myfut` exists and is initialised as per the instructions in Step 1.
 
 The script `insert.py` will read a data file containing player data and insert each entry into our database. 
 
