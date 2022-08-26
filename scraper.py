@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
+
 import re
 import time
 import requests
-import pandas as pd
 from bs4 import BeautifulSoup
 
 # Script which scrapes player data for all gold players from futhead.com 
