@@ -4,7 +4,9 @@
   "description": "A very simple FUT database and web server to revise and practice learned concepts.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "lint": "eslint src/**.js",
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,11 @@
     "express": "^4.18.1",
     "morgan": "^1.10.0",
     "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-plugin-jest": "^26.8.7",
+    "jest": "^29.0.1",
+    "sync-request": "^6.1.0"
   }
 }
