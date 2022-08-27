@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/zaldyz/myfut/issues"
   },
-  "homepage": "https://github.com/zaldyz/myfut#readme"
+  "homepage": "https://github.com/zaldyz/myfut#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.8.0"
+  }
 }
