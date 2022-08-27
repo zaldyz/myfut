@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A very simple FUT database and web server to revise and practice learned concepts.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "jest",
     "lint": "eslint src/**.js",

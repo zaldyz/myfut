@@ -1,12 +1,43 @@
 // Function implementations for myfut expresss server
-// import pg from 'pg';
+
+import pkg from 'pg';
+const { Client } = pkg;
+
+/*
+const client = new Client({
+  database: 'myfut'
+})
+client.connect()
+client.query('SELECT fullname, club from cards limit $1::int', [1], (err, res) => {
+  console.log(res.rows)
+  console.log(err ? err.stack : res.rows[0].message) // Hello World!
+  client.end()
+})
+*/
+console.log(playersListAll());
 
 /**
  * Return a list of all players in the DB
  * @returns {players: [player]}
  */
 function playersListAll() {
-  return {players: []};
+  let result = [];
+  const client = new Client({
+    database: 'myfut'
+  });
+  client.connect();
+  client.query('SELECT * from cards', (err, res) => {
+    if (err) {
+      client.end();
+      return {error: `DB Query error: ${err.stack}`};
+    }
+    // console.log(res.rows);
+    result = [...res.rows];
+    return result;
+    client.end();
+    //return {players: result};
+  });
+  return result;
 }
 
 /**
