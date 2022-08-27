@@ -1,6 +1,6 @@
 // Tests for function implementation behaviour
 
-import { playersListAll, playersSearch, playersFilter, playersAdd, resetDB } from 'src/myfut';
+import { playersListAll, playersSearch, playersFilter, playersAdd, resetDB } from './myfut';
 
 describe('Testing playersList, playersAdd and resetDB', () => {
   test('playersListAll: Empty database', () => {
@@ -86,7 +86,7 @@ describe('Testing playersFilter', () => {
       minPhy: undefined, 
       maxPhy: undefined,
     };
-    expect(playersFilter(filter)).toMatchObject({players: [
+    expect(playersFilter(filters)).toMatchObject({players: [
       {fullname: 'Robert Lewandowski', ovr: 99, ptype: 'PL', pos: 'ST', club: 'FC Barcelona', league: 'LaLiga Santander', pac: 97, sho: 99, pas: 90, dri: 98, def: 52, phy: 98},
     ]});
   });
