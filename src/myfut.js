@@ -37,5 +37,13 @@ function playersAdd(fullname, overall, playertype, position, club,
   return {};
 }
 
+/**
+ * Clears all entries in the myfut db
+ * @returns {}
+ */
+function resetDB() {
+  return {};
+}
 
-export {playersListAll, playersSearch, playersFilter, playersAdd};
+
+export { playersListAll, playersSearch, playersFilter, playersAdd, resetDB };
