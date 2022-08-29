@@ -49,6 +49,38 @@ app.get('/players/search', (req, res, next) => {
   })
 });
 
+app.get('/players/all', (req, res, next) => {
+  res.json({
+    error: 'Route not implemented yet!'
+  })
+});
+
+app.get('/players/search/id', (req, res, next) => {
+  res.json({
+    error: 'Route not implemented yet!'
+  })
+});
+
+app.get('/players/filter', (req, res, next) => {
+  res.json({
+    error: 'Route not implemented yet!'
+  })
+});
+
+app.post('/players/add', (req, res, next) => {
+  res.json({
+    error: 'Route not implemented yet!'
+  })
+});
+
+app.delete('/players/remove', (req, res, next) => {
+  res.json({
+    error: 'Route not implemented yet!'
+  })
+});
+
+
+
 /**
  * Start server
  */

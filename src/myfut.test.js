@@ -1,47 +1,138 @@
 // Tests for function implementation behaviour
+import request from 'sync-request';
 
-import { playersListAll, playersSearch, playersFilter, playersAdd, resetDB } from './myfut';
+const url = 'http://localhost';
+const port = 3257;
+
+function playersSearch(name) {
+  const res = request(
+    'GET',
+    `${url}:${port}/players/search`,
+    {
+      qs: {
+        name: name,
+      },
+    }
+  );
+  return JSON.parse(res.getBody());
+}
+
+function playersSearchId(name) {
+  const res = request(
+    'GET',
+    `${url}:${port}/players/search/id`,
+    {
+      qs: {
+        name: name,
+      },
+    }
+  );
+  return JSON.parse(res.getBody());
+}
+
+function playersList() {
+  const res = request(
+    'GET',
+    `${url}:${port}/players/all`
+  );
+  return JSON.parse(res.getBody());
+}
+
+function playersFilter(filters) {
+  const res = request(
+    'GET',
+    `${url}:${port}/players/filter`,
+    {
+      qs: filters
+    }
+  );
+  return JSON.parse(res.getBody());
+}
+
+function playersAdd(player) {
+  const res = request(
+    'POST',
+    `${url}:${port}/players/add`,
+    {
+      json: player
+    }
+  );
+  return JSON.parse(res.getBody());
+}
+
+function playersRemove(playerId) {
+  const res = request(
+    'DELETE',
+    `${url}:${port}/players/remove`,
+    {
+      qs: {
+        playerId: playerId
+      }
+    }
+  );
+  return JSON.parse(res.getBody());
+}
 
 describe('Testing playersList, playersAdd and resetDB', () => {
-  test('playersListAll: Empty database', () => {
-    resetDB();
-    expect(playersListAll()).toMatchObject({players: []});
-  });
-
-  test('playersListAll: Three players', () => {
-    resetDB();
-    expect(playersAdd('Robert Lewandowski', 99, 'PL', 'ST', 'FC Barcelona', 'LaLiga Santander', 97, 99, 90, 98, 52, 98)).toMatchObject({});
-    expect(playersAdd('Robert Longhead', 95, 'PL', 'ST', 'FC Passehlona', 'LaLiga Santander', 97, 99, 90, 98, 52, 98)).toMatchObject({});
-    expect(playersAdd('Timo Trashdog', 30, 'PL', 'ST', 'SentBackcuzGARB FC', 'Not good enough for premier league', 97, 20, 78, 98, 52, 98)).toMatchObject({});
-    expect(playersListAll()).toMatchObject({players: [
-      {fullname: 'Robert Lewandowski', ovr: 99, ptype: 'PL', pos: 'ST', club: 'FC Barcelona', league: 'LaLiga Santander', pac: 97, sho: 99, pas: 90, dri: 98, def: 52, phy: 98},
-      {fullname: 'Robert Longhead', ovr: 95, ptype: 'PL', pos: 'ST', club: 'FC Passehlona', league: 'LaLiga Santander', pac: 97, sho: 99, pas: 90, dri: 98, def: 52, phy: 98},
-      {fullname: 'Timo Trashdog', ovr: 30, ptype: 'PL', pos: 'ST', club: 'SentBackcuzGARB FC', league: 'Not good enough for premier league', pac: 97, sho: 20, pas: 78, dri: 98, def: 52, phy: 98}
-    ]});
+  test('playersListAll: list all players', () => {
+    expect(playersList()).toMatchObject(
+      { 
+        players: expect.arrayContaining(
+          [
+            expect.objectContaining({
+              fullname: expect.any(String),
+              overall: expect.any(Number),
+              position: expect.any(String),
+              club: expect.any(String),
+              league: expect.any(String),
+              pace: expect.any(Number),
+              shooting: expect.any(Number),
+              passing: expect.any(Number),
+              dribbling: expect.any(Number),
+              defence: expect.any(Number),
+              physical: expect.any(Number),
+            })
+          ]
+        )
+      }
+    );
   });
 });
 
 describe('Testing playersSearch', () => {
-  test('playersSearch: Empty database', () => {
-    resetDB();
-    expect(playersSearch('Robert')).toMatchObject({players: []});
+  test('playersSearch: Valid search', () => {
+    expect(playersSearch("Silva")).toMatchObject(
+      { 
+        players: expect.arrayContaining(
+          [
+            expect.objectContaining({
+              fullname: expect.any(String),
+              overall: expect.any(Number),
+              position: expect.any(String),
+              club: expect.any(String),
+              league: expect.any(String),
+              pace: expect.any(Number),
+              shooting: expect.any(Number),
+              passing: expect.any(Number),
+              dribbling: expect.any(Number),
+              defence: expect.any(Number),
+              physical: expect.any(Number),
+            })
+          ]
+        )
+      }
+    );
   });
 
-  test('playersSearch: Three players', () => {
-    resetDB();
-    expect(playersAdd('Robert Lewandowski', 99, 'PL', 'ST', 'FC Barcelona', 'LaLiga Santander', 97, 99, 90, 98, 52, 98)).toMatchObject({});
-    expect(playersAdd('Robert Longhead', 95, 'PL', 'ST', 'FC Passehlona', 'LaLiga Santander', 97, 99, 90, 98, 52, 98)).toMatchObject({});
-    expect(playersAdd('Timo Trashdog', 30, 'PL', 'ST', 'SentBackcuzGARB FC', 'Not good enough for premier league', 97, 20, 78, 98, 52, 98)).toMatchObject({});
-    expect(playersSearch('Robert')).toMatchObject({players: [
-      {fullname: 'Robert Lewandowski', ovr: 99, ptype: 'PL', pos: 'ST', club: 'FC Barcelona', league: 'LaLiga Santander', pac: 97, sho: 99, pas: 90, dri: 98, def: 52, phy: 98},
-      {fullname: 'Robert Longhead', ovr: 95, ptype: 'PL', pos: 'ST', club: 'FC Passehlona', league: 'LaLiga Santander', pac: 97, sho: 99, pas: 90, dri: 98, def: 52, phy: 98},
-    ]});
+  test('playersSearch: No results', () => {
+    expect(playersSearch("Hablooblob")).toMatchObject({
+      players: []
+    });
   });
 });
 
 describe('Testing playersFilter', () => {
-  test('playersFilter: Empty database', () => {
-    resetDB();
+  test('playersFilter: Valid filter', () => {
     const filters = {
       club: undefined,
       league: 'LaLiga Santander',
@@ -60,23 +151,39 @@ describe('Testing playersFilter', () => {
       minPhy: undefined, 
       maxPhy: undefined,
     };
-    expect(playersFilter(filters)).toMatchObject({players: []});
+    expect(playersFilter(filters)).toMatchObject(
+      { 
+        players: expect.arrayContaining(
+          [
+            expect.objectContaining({
+              fullname: expect.any(String),
+              overall: expect.any(Number),
+              position: expect.any(String),
+              club: expect.any(String),
+              league: expect.any(String),
+              pace: expect.any(Number),
+              shooting: expect.any(Number),
+              passing: expect.any(Number),
+              dribbling: expect.any(Number),
+              defence: expect.any(Number),
+              physical: expect.any(Number),
+            })
+          ]
+        )
+      }
+    );
   });
 
-  test('playersFilter: Three players', () => {
-    resetDB();
-    expect(playersAdd('Robert Lewandowski', 99, 'PL', 'ST', 'FC Barcelona', 'LaLiga Santander', 97, 99, 90, 98, 52, 98)).toMatchObject({});
-    expect(playersAdd('Robert Longhead', 95, 'PL', 'ST', 'FC Passehlona', 'LaLiga Santander', 97, 99, 90, 98, 52, 98)).toMatchObject({});
-    expect(playersAdd('Timo Trashdog', 30, 'PL', 'ST', 'SentBackcuzGARB FC', 'Not good enough for premier league', 97, 20, 78, 98, 52, 98)).toMatchObject({});
+  test('playersFilter: Invalid Filter', () => {
     const filters = {
       club: undefined,
       league: 'LaLiga Santander',
-      minOverall: 96,
+      minOverall: 100,
       maxOverall: undefined, 
       minPace: undefined, 
       maxPace: undefined,
       minSho: undefined, 
-      maxSho: undefined,
+      maxSho: -35,
       minPas: undefined, 
       maxPas: undefined,
       minDri: undefined, 
@@ -86,11 +193,91 @@ describe('Testing playersFilter', () => {
       minPhy: undefined, 
       maxPhy: undefined,
     };
-    expect(playersFilter(filters)).toMatchObject({players: [
-      {fullname: 'Robert Lewandowski', ovr: 99, ptype: 'PL', pos: 'ST', club: 'FC Barcelona', league: 'LaLiga Santander', pac: 97, sho: 99, pas: 90, dri: 98, def: 52, phy: 98},
-    ]});
+    expect(playersFilter(filters)).toMatchObject(
+      { 
+        error: expect.any(String),
+      }
+    );
   });
 });
 
+describe('Testing playerSearchID, playersAdd and resetDB', () => {
+  test('playersSearchId: Valid search', () => {
+    expect(playersSearchId("Silva")).toMatchObject(
+      { 
+        players: expect.arrayContaining(
+          [
+            expect.objectContaining({
+              id: expect.any(Number),
+              fullname: expect.any(String),
+              overall: expect.any(Number),
+              position: expect.any(String),
+            })
+          ]
+        )
+      }
+    );
+  });
 
+  test('playersSearchId: No results', () => {
+    expect(playersSearchId("Hablooblob")).toMatchObject({
+      players: []
+    });
+  });
+});
 
+// Tests for players/add and players/remove
+describe('Testing playersAdd and playersRemove', () => {
+  test('playersAdd: Invalid player', () => {
+    const newPlayer = {
+      fullname: '',
+      playertype: 'PL',
+      overall: 92,
+      position: "RB",
+      club: "Leeds United",
+      league: "Premier League",
+      pace: 97,
+      shooting: 65,
+      passing: 100,
+      dribbling: 92,
+      defence: 88,
+      physical: 86
+    }
+    expect(playersAdd(newPlayer)).toMatchObject(
+      { 
+        error: expect.any(String)
+      }
+    );
+  });
+
+  test('playersAdd: add valid player then remove', () => {
+    const newPlayer = {
+      fullname: 'Daniel Hoohaa',
+      playertype: 'PL',
+      overall: 92,
+      position: "RB",
+      club: "Leeds United",
+      league: "Premier League",
+      pace: 97,
+      shooting: 65,
+      passing: 94,
+      dribbling: 92,
+      defence: 88,
+      physical: 86
+    }
+    // Add player
+    expect(playersAdd(newPlayer)).toMatchObject({});
+
+    // Get the player's ID
+    const Ids = playersSearchId("Daniel Hoohaa");
+    const DanielId = Ids.players[0].id;
+
+    // Remove player
+    expect(playersRemove(DanielId)).toMatchObject({});
+
+    // Check that player has been removed
+    expect(playersSearchId("Daniel Hoohaa")).toMatchObject({
+      players: []
+    })
+  });
+});
