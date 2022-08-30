@@ -134,22 +134,8 @@ describe('Testing playersSearch', () => {
 describe('Testing playersFilter', () => {
   test('playersFilter: Valid filter', () => {
     const filters = {
-      club: undefined,
       league: 'LaLiga Santander',
-      minOverall: 96,
-      maxOverall: undefined, 
-      minPace: undefined, 
-      maxPace: undefined,
-      minSho: undefined, 
-      maxSho: undefined,
-      minPas: undefined, 
-      maxPas: undefined,
-      minDri: undefined, 
-      maxDri: undefined,
-      minDef: undefined, 
-      maxDef: undefined,
-      minPhy: undefined, 
-      maxPhy: undefined,
+      overall: '1,97', 
     };
     expect(playersFilter(filters)).toMatchObject(
       { 
@@ -176,22 +162,9 @@ describe('Testing playersFilter', () => {
 
   test('playersFilter: Invalid Filter', () => {
     const filters = {
-      club: undefined,
       league: 'LaLiga Santander',
-      minOverall: 100,
-      maxOverall: undefined, 
-      minPace: undefined, 
-      maxPace: undefined,
-      minSho: undefined, 
-      maxSho: -35,
-      minPas: undefined, 
-      maxPas: undefined,
-      minDri: undefined, 
-      maxDri: undefined,
-      minDef: undefined, 
-      maxDef: undefined,
-      minPhy: undefined, 
-      maxPhy: undefined,
+      overall: '0,95', 
+      passing: '-3,1',  
     };
     expect(playersFilter(filters)).toMatchObject(
       { 

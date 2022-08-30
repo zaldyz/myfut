@@ -19,6 +19,7 @@ Diego Maradona|Icons|Icons|CAM|98|93|94|95|98|42|78
 Pelé|Icons|Icons|CAM|98|95|96|93|96|60|76
 Lionel Messi|Paris SG|Ligue 1 Uber Eats|RW|98|93|97|98|99|40|76
 Robert Lewandowski|FC Bayern München|Bundesliga|ST|98|93|98|87|95|50|95
+Georginio Wijnaldum|Roma FC|Serie A TIM|CM|97|94|91|94|99|94|94
 Ryan Gravenberch|FC Bayern München|Bundesliga|CM|97|96|92|96|98|90|92
 Allan Saint-Maximin|Newcastle Utd|Premier League|LM|97|99|95|91|99|35|87
 Wissam Ben Yedder|AS Monaco|Ligue 1 Uber Eats|LW|97|99|97|92|99|55|84
@@ -45,9 +46,8 @@ Diego Maradona|Icons|Icons|CAM|97|92|93|92|97|40|76
 Kylian Mbappé|Paris SG|Ligue 1 Uber Eats|ST|97|99|95|90|98|44|88
 Cristiano Ronaldo|Manchester Utd|Premier League|ST|97|93|98|88|95|39|92
 Rúben Dias|Manchester City|Premier League|CB|97|87|50|84|81|97|96
-Jorginho|Chelsea|Premier League|CM|97|88|90|98|93|86|87
-Paul Pogba|Piemonte Calcio|Serie A TIM|CM|96|93|90|93|98|93|93
-Georginio Wijnaldum|Roma FC|Serie A TIM|CM|96|98|96|91|95|59|98
+Jorginho|Chelsea|Premier League|CM|97|93|91|95|97|91|93
+Paul Pogba|Piemonte Calcio|Serie A TIM|CM|96|98|96|91|95|59|98
 Darwin Núñez|Liverpool|Premier League|ST|96|99|96|93|99|71|88
 Gelson Martins|AS Monaco|Ligue 1 Uber Eats|RM|96|95|96|94|98|60|81
 Antoine Griezmann|Atlético de Madrid|LaLiga Santander|ST|96|90|96|93|97|87|96

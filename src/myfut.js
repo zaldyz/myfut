@@ -1,80 +1,86 @@
 // Function implementations for myfut expresss server
 
-import pkg from 'pg';
-const { Client } = pkg;
-
-/*
-const client = new Client({
-  database: 'myfut'
-})
-client.connect()
-client.query('SELECT fullname, club from cards limit $1::int', [1], (err, res) => {
-  console.log(res.rows)
-  console.log(err ? err.stack : res.rows[0].message) // Hello World!
-  client.end()
-})
-*/
-console.log(playersListAll());
-
 /**
- * Return a list of all players in the DB
- * @returns {players: [player]}
+ * Returns the query string and values for the given set of filters
  */
-function playersListAll() {
-  let result = [];
-  const client = new Client({
-    database: 'myfut'
-  });
-  client.connect();
-  client.query('SELECT * from cards', (err, res) => {
-    if (err) {
-      client.end();
-      return {error: `DB Query error: ${err.stack}`};
+function processFilter(club, league, ovr, pac, sho, pas, dri, def, phy) {
+  if (!checkValues(club, league, ovr, pac, sho, pas, dri, def, phy)) {
+    throw new Error('Invalid Filters!');
+  }
+  let queryStr = `SELECT fullname, overall, position, club, league, pace, shooting, passing, dribbling, defence, physical 
+  FROM cards`;
+
+  let conditions = [];
+  
+  let argCount = 1;
+  let args = [];
+
+  // Check club and league filters
+  if (!(club == undefined)) {
+    conditions.push(`lower(unaccent(club)) = $${argCount}`);
+    args.push(club.toLowerCase());
+    argCount++;
+  }
+
+  // Check league filters
+  if (!(league == undefined)) {
+    conditions.push(`lower(unaccent(league)) = $${argCount}`);
+    args.push(league.toLowerCase());
+    argCount++;
+  }
+
+  // Check range filters
+  const ranges = [ovr, pac, sho, pas, dri, def, phy];
+  const rangeNames = ['overall', 'pace', 'shoooting', 'passing', 'dribbling', 'defence', 'physical'];
+  for (let i = 0; i < 7; i++) {
+    if (!(ranges[i] == undefined)) {
+      const m = ranges[i].match(/^(\d+),(\d+)$/);
+      conditions.push(`${rangeNames[i]} BETWEEN $${argCount} AND $${argCount + 1}`);
+      args.push(parseInt(m[1]));
+      args.push(parseInt(m[2]));
+      argCount += 2;
     }
-    // console.log(res.rows);
-    result = [...res.rows];
-    return result;
-    client.end();
-    //return {players: result};
-  });
-  return result;
+  }
+  if (conditions) {
+    queryStr = queryStr + ` WHERE
+     `;
+  }
+
+  return {
+    queryStr: queryStr + conditions.join(' AND '),
+    values: args
+  };
 }
 
 /**
- * Returns a list of all players whose name matches with search
- * @returns {players: [player]}
+ * Checks the filter parameters for empty strings or illegal ranges
  */
-function playersSearch(search) {
-  return {players: []};
+function checkValues(club, league, ovr, pac, sho, pas, dri, def, phy) {
+  if (club == '') {
+    return false;
+  } else if (league == '') {
+    return false;
+  } 
+
+  // Check ranges
+  return checkRange(ovr) && checkRange(pac) && checkRange(sho) && checkRange(pas)
+     && checkRange(dri) && checkRange(def) && checkRange(phy);
 }
 
 /**
- * Returns a list of all players who match the filters provided
- * filters = {club, league, minOvr, maxOvr, minPac, maxPac...}
- * @returns {players: [player]}
+ * Checks whether a range parameter is valid
  */
-function playersFilter(filters) {
-  return {players: []};
+function checkRange(range) {
+  if (!(range == undefined)) {
+    const m = range.match(/^(\d+),(\d+)$/);
+    if (m) {
+      if (!isNaN(m[1]) && !isNaN(m[2])) {
+        return parseInt(m[1]) >= 1 && parseInt(m[1]) <= 99 && parseInt(m[2]) >= 1 && parseInt(m[2]) <= 99;
+      };
+    }
+    return false;
+  }
+  return true;
 }
 
-/**
- * Adds a player to the myfut database
- * @returns {} on success
- * @returns {error: 'error'} on error
- */
-function playersAdd(fullname, overall, playertype, position, club, 
-  league, pace, shooting, passing, dribbling, defence, physical) 
-{
-  return {};
-}
-
-/**
- * Clears all entries in the myfut db
- * @returns {}
- */
-function resetDB() {
-  return {};
-}
-
-
-export { playersListAll, playersSearch, playersFilter, playersAdd, resetDB };
+export { processFilter };
