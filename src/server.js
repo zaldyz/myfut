@@ -6,15 +6,6 @@ const { Pool } = pkg;
 
 const pool = new Pool({database: 'myfut'});
 
-/*
-pool.query('SELECT * FROM users WHERE id = $1', [1], (err, res) => {
-  if (err) {
-    throw err
-  }
-  console.log('user:', res.rows[0])
-})
-*/
-
 const port = 3257;
 
 const app = express();
@@ -37,7 +28,7 @@ app.get('/players/search', (req, res, next) => {
   pool.query(
   `SELECT fullname, overall, position, club, league, pace, shooting, passing, dribbling, defence, physical 
   FROM cards 
-  WHERE fullname ~* $1`, [req.query.name], (err, result) => {
+  WHERE lower(unaccent(fullname)) ~* $1`, [req.query.name.toLowerCase()], (err, result) => {
     if (err) {
       return next(err);
     }
@@ -78,8 +69,6 @@ app.delete('/players/remove', (req, res, next) => {
     error: 'Route not implemented yet!'
   })
 });
-
-
 
 /**
  * Start server

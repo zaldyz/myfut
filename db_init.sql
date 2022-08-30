@@ -1,7 +1,9 @@
 -- Simple myFut DB
-drop table if exists Cards;
+DROP EXTENSION IF EXISTS unaccent;
+CREATE EXTENSION unaccent;
+DROP TABLE IF EXISTS Cards;
 
-create table Cards (
+CREATE TABLE Cards (
 	id          serial,
   fullname    text not null,
 	overall     integer not null check (overall >= 0 and overall <= 99),
@@ -17,5 +19,6 @@ create table Cards (
   dribbling   integer not null check (dribbling >= 0 and dribbling <= 99),
   defence     integer not null check (defence >= 0 and defence <= 99),
   physical    integer not null check (physical >= 0 and physical <= 99),
-  primary key (id)
+  PRIMARY KEY (id)
 );
+
