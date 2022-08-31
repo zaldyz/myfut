@@ -204,7 +204,6 @@ describe('Testing playersAdd and playersRemove', () => {
   test('playersAdd: Invalid player', () => {
     const newPlayer = {
       fullname: '',
-      playertype: 'PL',
       overall: 92,
       position: "RB",
       club: "Leeds United",
@@ -226,7 +225,6 @@ describe('Testing playersAdd and playersRemove', () => {
   test('playersAdd: add valid player then remove', () => {
     const newPlayer = {
       fullname: 'Daniel Hoohaa',
-      playertype: 'PL',
       overall: 92,
       position: "RB",
       club: "Leeds United",
