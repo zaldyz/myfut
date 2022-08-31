@@ -239,14 +239,18 @@ describe('Testing playersAdd and playersRemove', () => {
       physical: 86
     }
     // Add player
-    expect(playersAdd(newPlayer)).toMatchObject({});
+    expect(playersAdd(newPlayer)).toMatchObject({
+      message: expect.any(String)
+    });
 
     // Get the player's ID
     const Ids = playersSearchId("Daniel Hoohaa");
     const DanielId = Ids.players[0].id;
 
     // Remove player
-    expect(playersRemove(DanielId)).toMatchObject({});
+    expect(playersRemove(DanielId)).toMatchObject({
+      message: expect.any(String)
+    });
 
     // Check that player has been removed
     expect(playersSearchId("Daniel Hoohaa")).toMatchObject({

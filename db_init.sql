@@ -7,7 +7,7 @@ CREATE TABLE Cards (
 	id          serial,
   fullname    text not null,
 	overall     integer not null check (overall >= 0 and overall <= 99),
-	playerType  varchar(2) not null check (playerType in ('GK', 'PL')),
+	playerType  varchar(2) check (playerType in ('GK', 'PL')) default 'PL',
   position    varchar(3) not null check (position in ('ST', 'RF', 'LF', 'RW', 'LW', 'CF', 'CAM', 'CM', 'CDM', 'RM', 'LM', 'CB', 'LB', 'RB', 'LWB', 'RWB', 'GK')),
 	club        varchar(50) not null,
 	league      varchar(50) not null,

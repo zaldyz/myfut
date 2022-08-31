@@ -47,7 +47,7 @@ function processFilter(club, league, ovr, pac, sho, pas, dri, def, phy) {
   }
 
   return {
-    queryStr: queryStr + conditions.join(' AND '),
+    queryStr: queryStr + conditions.join(' AND ') + ' ORDER BY overall DESC, fullname',
     values: args
   };
 }

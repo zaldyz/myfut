@@ -29,7 +29,8 @@ app.get('/players/search', (req, res, next) => {
   pool.query(
   `SELECT fullname, overall, position, club, league, pace, shooting, passing, dribbling, defence, physical 
   FROM cards 
-  WHERE lower(unaccent(fullname)) ~* $1`, [req.query.name.toLowerCase()], (err, result) => {
+  WHERE lower(unaccent(fullname)) ~* $1
+  ORDER BY overall DESC, fullname`, [req.query.name.toLowerCase()], (err, result) => {
     if (err) {
       return next(err);
     }
@@ -44,7 +45,8 @@ app.get('/players/search', (req, res, next) => {
 app.get('/players/all', (req, res, next) => {
   pool.query(
     `SELECT fullname, overall, position, club, league, pace, shooting, passing, dribbling, defence, physical 
-    FROM cards`, (err, result) => {
+    FROM cards
+    ORDER BY overall DESC, fullname`, (err, result) => {
       if (err) {
         return next(err);
       }
@@ -60,7 +62,8 @@ app.get('/players/search/id', (req, res, next) => {
   pool.query(
     `SELECT id, fullname, overall, position
     FROM cards
-    WHERE lower(unaccent(fullname)) ~* $1`, [req.query.name.toLowerCase()], (err, result) => {
+    WHERE lower(unaccent(fullname)) ~* $1
+    ORDER BY overall DESC, fullname`, [req.query.name.toLowerCase()], (err, result) => {
       if (err) {
         return next(err);
       }
@@ -87,7 +90,7 @@ app.get('/players/filter', (req, res, next) => {
             players: result.rows,
           }
         );
-      });
+    });
   } catch {
     res.json({
       error: 'Invalid Filters!'
@@ -96,9 +99,33 @@ app.get('/players/filter', (req, res, next) => {
 });
 
 app.post('/players/add', (req, res, next) => {
-  res.json({
-    error: 'Route not implemented yet!'
-  })
+  const { 
+    fullname, position, club, league, overall,
+    pace, shooting, passing, dribbling, defence, physical
+  } = req.body;
+
+  pool.query(
+    `INSERT INTO cards 
+    (fullname, overall, position, club, league, pace, shooting, passing, dribbling, defence, physical)
+    VALUES
+    ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
+    [fullname, parseInt(overall), position, club, league, parseInt(pace), parseInt(shooting), parseInt(passing), parseInt(dribbling), parseInt(defence), parseInt(physical)],
+     (err, result) => {
+      if (err) {
+        res.json(
+          {
+            error: 'Player could not be added'
+          }
+        );
+      } else {
+        res.json(
+          {
+            message: `Player ${fullname} added!`
+          }
+          );
+      }
+    });
+  
 });
 
 app.delete('/players/remove', (req, res, next) => {
