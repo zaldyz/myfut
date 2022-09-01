@@ -42,13 +42,7 @@ To run the following scripts, the following PyPi packages are required:
 
 To install:
 ```
-$ pip install requests
-```
-```
-$ pip install bs4
-```
-```
-$ pip install psycopg2
+$ pip install bs4 requests psycopg2
 ```
 
 Finally, we can run the script:
