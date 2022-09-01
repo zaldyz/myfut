@@ -26,8 +26,9 @@ app.get('/', (req, res) => {
 
 
 app.get('/players/search', (req, res, next) => {
+  const idStr = req.query.id ? 'id, ' : ''; 
   pool.query(
-  `SELECT fullname, overall, position, club, league, pace, shooting, passing, dribbling, defence, physical 
+  `SELECT ${idStr}fullname, overall, position, club, league, pace, shooting, passing, dribbling, defence, physical 
   FROM cards 
   WHERE lower(unaccent(fullname)) ~* $1
   ORDER BY overall DESC, fullname`, [req.query.name.toLowerCase()], (err, result) => {
@@ -47,23 +48,6 @@ app.get('/players/all', (req, res, next) => {
     `SELECT fullname, overall, position, club, league, pace, shooting, passing, dribbling, defence, physical 
     FROM cards
     ORDER BY overall DESC, fullname`, (err, result) => {
-      if (err) {
-        return next(err);
-      }
-      res.json(
-        {
-          players: result.rows,
-        }
-      );
-  });
-});
-
-app.get('/players/search/id', (req, res, next) => {
-  pool.query(
-    `SELECT id, fullname, overall, position
-    FROM cards
-    WHERE lower(unaccent(fullname)) ~* $1
-    ORDER BY overall DESC, fullname`, [req.query.name.toLowerCase()], (err, result) => {
       if (err) {
         return next(err);
       }
@@ -124,14 +108,31 @@ app.post('/players/add', (req, res, next) => {
           }
           );
       }
-    });
+  });
   
 });
 
 app.delete('/players/remove', (req, res, next) => {
-  res.json({
-    error: 'Route not implemented yet!'
-  })
+  pool.query(
+    `DELETE FROM cards
+    WHERE 
+    id = $1`, 
+    [parseInt(req.query.playerId)],
+     (err, result) => {
+      if (err) {
+        res.json(
+          {
+            error: 'Player could not be removed'
+          }
+        );
+      } else {
+        res.json(
+          {
+            message: `Player succesfully removed!`
+          }
+        );
+      }
+  });
 });
 
 /**

@@ -20,10 +20,11 @@ function playersSearch(name) {
 function playersSearchId(name) {
   const res = request(
     'GET',
-    `${url}:${port}/players/search/id`,
+    `${url}:${port}/players/search`,
     {
       qs: {
         name: name,
+        id: 'True',
       },
     }
   );
@@ -185,6 +186,14 @@ describe('Testing playerSearchID, playersAdd and resetDB', () => {
               fullname: expect.any(String),
               overall: expect.any(Number),
               position: expect.any(String),
+              club: expect.any(String),
+              league: expect.any(String),
+              pace: expect.any(Number),
+              shooting: expect.any(Number),
+              passing: expect.any(Number),
+              dribbling: expect.any(Number),
+              defence: expect.any(Number),
+              physical: expect.any(Number),
             })
           ]
         )
