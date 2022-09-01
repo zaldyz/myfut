@@ -1,2 +1,4 @@
-# myfut
-A very simple FUT database and web server to revise and practice learned concepts.
+# myFut
+A very simple FUT database and express server to revise and practice learned concepts.
+
+See `INSTALL.md` for instructions.
